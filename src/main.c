@@ -1,5 +1,3 @@
-
-
 /*****************************************************************************/
 /*                                                                           */
 /*  CROBOTS                                                                  */
@@ -33,6 +31,22 @@ char *version   = "CROBOTS - version 1.1, December, 1985\n";
 char *copyright = "Copyright 1985 by Tom Poindexter, All rights reserved.\n";
 
 
+void printGPL( void )
+{
+  fprintf(stderr,"\n");
+  fprintf(stderr,version);
+  fprintf(stderr,copyright);
+  fprintf(stderr,"\n     CROBOTS - fighting robots C compiler and virtual computer\n");
+  fprintf(stderr,"       distributed under the GNU GPL, version 2.\n");
+  fprintf(stderr,"\n");
+  fprintf(stderr,"Press <enter> to continue......");
+  getchar();
+  fprintf(stderr,"\n");
+}
+
+
+
+
 int main( int argc, char **argv )
 {
   long limit = CYCLE_LIMIT;
@@ -53,16 +67,7 @@ int main( int argc, char **argv )
 
   
   /* print version, copyright notice, GPL notice */
-
-  fprintf(stderr,"\n");
-  fprintf(stderr,version);
-  fprintf(stderr,copyright);
-  fprintf(stderr,"\n     CROBOTS - fighting robots C compiler and virtual computer\n");
-  fprintf(stderr,"       distributed under the GNU GPL, version 2.\n");
-  fprintf(stderr,"\n");
-  fprintf(stderr,"Press <enter> to continue......");
-  getchar();
-  fprintf(stderr,"\n");
+/*  printGPL(); */
 
   /* init robots */
   for (i = 0; i < MAXROBOTS; i++) {
@@ -148,16 +153,17 @@ int main( int argc, char **argv )
 
   /* compile only */
   if (comp_only) {
+    printGPL();
     comp(files,num_robots);
   }
   else 
 
     /* debug the first robot listed */
     if (debug_only) {
+      printGPL();
       cpu_trace(files[0]); /* trace only first source */
     }
     else
-
       /* run a series of matches */
       if (matches != 0) {
 	if (num_robots < 2) {	/* if only one robot, make it fight itself */
@@ -177,6 +183,7 @@ int main( int argc, char **argv )
 	  num_robots++;
 	  files[1] = files[0];
 	}
+	printGPL();
 	play(files,num_robots);
       }
 	
@@ -360,7 +367,6 @@ void play( char **f, int n )
 
 
 /* match - run a series of matches */
-
 void match( int m, long l, char **f, int n )
 {
   int num_robots = 0;
@@ -384,7 +390,7 @@ void match( int m, long l, char **f, int n )
   for (i = 0; i < n; i++) {
     wins[i] = 0;
     ties[i] = 0;
-    fprintf(stderr,"Compiling robot source: %s\n",f[i]);
+/*    fprintf(stderr,"Compiling robot source: %s\n",f[i]); */
     f_in = fopen(f[i],"r");
 
     /* compile the robot */
@@ -398,19 +404,17 @@ void match( int m, long l, char **f, int n )
     fclose(f_in);
 
     /* check r_flag for compile errors */
-    if (r_flag) {
+    if (r_flag) 
+    {
       fprintf(stderr,"\n %s could not compile\n",f[i]);
       free_robot(num_robots);
-    } else {
-      fprintf(stderr,"\n %s compiled without errors\n",f[i]);
+    } else 
+    {
+      /* fprintf(stderr,"\n %s compiled without errors\n",f[i]); */
       /* get last part of file name */
-#ifdef UNIX
       s = strrchr(f[i],'/');
-#else
-      s = strrchr(f[i],'\\');
-#endif
-      if (s == (char *) NULL)
-        s = f[i];
+      if (s == (char *) NULL) s = f[i];
+      /* BJ CHECK SECURITY HERE */ 
       strcpy(robots[num_robots].name,s);
       num_robots++;
     }
@@ -423,10 +427,10 @@ void match( int m, long l, char **f, int n )
     exit(1);
   }
 
-  fprintf(stderr,"\nMatch play starting.\n\n");
+/*  fprintf(stderr,"\nMatch play starting.\n\n"); */
   for (m_count = 1; m_count <= m; m_count++) {
 
-    printf("\nMatch %6d: ",m_count);
+/*    printf("\nMatch %6d: ",m_count); */
     for (i = 0; i < num_robots; i++) {
       init_robot(i);
       robot_go(&robots[i]);
@@ -481,46 +485,52 @@ void match( int m, long l, char **f, int n )
 	break;
     }
 
-    printf(" cycles = %ld:\n  Survivors:\n",c);
+/*    printf(" cycles = %ld:\n  Survivors:\n",c); */
+
 
     k = 0;
-    for (i = 0; i < num_robots; i++) {
-      if (robots[i].status == ACTIVE) {
-	printf("   (%d)%14s: damage=%% %d  ",i+1,robots[i].name,
-		robots[i].damage);
+    for (i = 0; i < num_robots; i++) 
+    {
+      if (robots[i].status == ACTIVE) 
+      {
+/*
+	printf("   (%d)%14s: damage=%% %d  ",i+1,robots[i].name, robots[i].damage);  
 	if (i == 1)
-	  printf("\n");
+	  printf("\n"); 
 	else
-	  printf("\t");
+	  printf("\t");  
+*/
 	k++;
       }
     }
-
+/*
     if (k == 0) {
       printf("mutual destruction\n");
     } else {
       printf("\n");
     }
+*/
 
-    printf("  Cumulative score:\n");
-    for (i = 0; i < n; i++) {
-      if (robots[i].status == ACTIVE) {
-	if (k == 1)
-	  wins[i]++;
-	else
-	  ties[i]++;
+/*    printf("  Cumulative score:\n"); */
+    printf("%i,",m_count);
+    for (i = 0; i < n; i++) 
+    {
+      if (robots[i].status == ACTIVE) 
+      {
+	if (k == 1) wins[i]++; else ties[i]++;
       }
-      printf("   (%d)%14s: wins=%d ties=%d  ",i+1,robots[i].name,
-	      wins[i],ties[i]);
-      if (i == 1)
-	printf("\n");
-      else
-	printf("\t");
+      if(i < n-1) 
+      {
+	printf("%s,%d,%d,",robots[i].name,wins[i],ties[i]);
+      }else
+      {
+	printf("%s,%d,%d\n",robots[i].name,wins[i],ties[i]);
+      }
     }
-    printf("\n");
+/*    printf("\n"); */
   }
 
-  fprintf(stderr,"\nMatch play finished.\n\n");
+/*  fprintf(stderr,"\nMatch play finished.\n\n"); */
   exit(0);
 
 }
