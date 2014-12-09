@@ -413,7 +413,10 @@ void match( int m, long l, char **f, int n )
       /* fprintf(stderr,"\n %s compiled without errors\n",f[i]); */
       /* get last part of file name */
       s = strrchr(f[i],'/');
-      if (s == (char *) NULL) s = f[i];
+      if (s == (char *) NULL) 
+      {
+        s = f[i];
+      } else s=s+1;
       /* BJ CHECK SECURITY HERE */ 
       strcpy(robots[num_robots].name,s);
       num_robots++;
