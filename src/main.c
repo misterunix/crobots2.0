@@ -515,19 +515,22 @@ void match( int m, long l, char **f, int n )
 */
 
 /*    printf("  Cumulative score:\n"); */
-    printf("%i,",m_count);
+    if(m_count == m ) printf("%i,",m_count);
     for (i = 0; i < n; i++) 
     {
       if (robots[i].status == ACTIVE) 
       {
 	if (k == 1) wins[i]++; else ties[i]++;
       }
-      if(i < n-1) 
+      if( m_count == m )
       {
-	printf("%s,%d,%d,",robots[i].name,wins[i],ties[i]);
-      }else
-      {
-	printf("%s,%d,%d\n",robots[i].name,wins[i],ties[i]);
+        if(i < n-1) 
+        {
+    	  printf("%s,%d,%d,",robots[i].name,wins[i],ties[i]);
+        }else
+        {
+	  printf("%s,%d,%d\n",robots[i].name,wins[i],ties[i]);
+        }
       }
     }
 /*    printf("\n"); */
