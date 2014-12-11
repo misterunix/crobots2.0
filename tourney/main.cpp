@@ -221,16 +221,73 @@ void parseINI( ifstream & cfgfile )
 	}
 }
 
+void printOptions( void )
+{
+  cout << "-h -help --help" << endl;
+  cout << "-u username" << endl;
+  cout << "-p password" << endl;
+  cout << "-b botname" << endl;
+  cout << "-f filename" << endl;
+  cout << "-a (Add bot to user db.)" << endl;
+  cout << "-t hill (Add bot to hill.)" << endl;
+  cout << endl;
+  exit(0);
+}
+
 int main( int argc, char **argv )
 {
 
 	ifstream infile;
 
 	infile.open("tourney.ini");
-
 	parseINI( infile );
-
 	infile.close();
+
+	int i;
+	vector <string> cla;
+	for(i=1;i<argc;i++)
+	{
+		string arg;
+		arg = argv[i];
+		if( (arg=="-h") || (arg=="-help") || (arg=="--help") )
+		{
+			printOptions();
+		}
+		if( arg=="-u" )
+		{
+			i++;
+			cout << "username: " << argv[i] << endl;
+		}
+		if( arg=="-p" )
+		{
+			i++;
+			cout << "password: "<< argv[i] << endl;
+		}
+		if( arg=="-b" )
+		{
+			i++;
+			cout << "botname: " << argv[i] << endl;
+		}
+		if( arg=="-t" )
+		{
+			i++;
+			cout << "hill: " << argv[i] << endl;
+		}
+		if( arg=="-f" )
+		{
+			i++;
+			cout << "filename: " << argv[i] << endl;
+		}
+		if( arg=="-a" )
+		{
+			cout << "Add bot to user." << endl;
+		}
+		if( arg=="-d" )
+		{
+			cout << "Remove bot from user." << endl;
+		}
+	}
+
 
 	for (map<string,string>::iterator it=options.begin(); it!=options.end(); ++it)
 	cout << it->first << " => " << it->second << '\n';
