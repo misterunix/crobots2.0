@@ -1,2 +1,5 @@
 src/grammar.c
+src/lexanal.c
+src/lexanal.h
+src/tokens.h
 

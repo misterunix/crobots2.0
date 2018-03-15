@@ -1,7 +1,7 @@
 CC = gcc
 # makefile for crobots
 
-OBJS =  main.o grammar.o lexanal.o compiler.o cpu.o intrins.o display.o screen.o motion.o
+OBJS =  grammar.o lexanal.o compiler.o cpu.o intrins.o display.o screen.o motion.o main.o
 
 SOURCES = crobots.h compiler.h tokens.h main.c grammar.y grammar.c lexanal.l lexanal.c compiler.c cpu.c intrins.c display.c screen.c screend.c motion.c 
 
