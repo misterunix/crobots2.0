@@ -28,14 +28,14 @@ main.o: 	crobots.h main.c
 		cc $(CFLAGS) -c main.c
 
 grammar.o: 	crobots.h compiler.h grammar.y
-		yacc -d grammar.y
-		egrep -v '# line|^#$$' y.tab.c >grammar.c
-		rm y.tab.c
-		mv y.tab.h tokens.h
+		bison -d grammar.y
+		egrep -v '# line|^#$$' grammar.tab.c >grammar.c
+		rm grammar.tab.c
+		mv grammar.tab.h tokens.h
 		cc $(CFLAGS) -c grammar.c
 
 lexanal.o: 	crobots.h compiler.h lexanal.l grammar.y
-		lex --nostdinit --header-file=lexanal.h lexanal.l
+		flex --nostdinit --header-file=lexanal.h lexanal.l
 		egrep -v '# ifdef|# endif' lex.yy.c >lexanal.c
 		rm lex.yy.c
 		cc $(CFLAGS) -c lexanal.c

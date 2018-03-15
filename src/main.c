@@ -23,6 +23,9 @@
 int _stack = 6000;  /* Lattice C: give more stack than default of 2048 */
 #endif
 
+
+#include"tokens.h"
+
 /* files declared in compiler.h */
 FILE *f_in;
 FILE *f_out;
@@ -44,7 +47,11 @@ void printGPL( void )
   fprintf(stderr,"\n");
 }
 
-
+void free_robot( int i );
+void init_robot( int i );
+void cycle( void );
+void move_robots(int displ);
+void move_miss(int displ);
 
 
 int main( int argc, char **argv )
@@ -627,9 +634,7 @@ void cpu_trace( char *f )
 
 
 /* init a robot */
-init_robot(i)
-
-int i;
+void init_robot( int i)
 {
   register int j;
 
@@ -664,9 +669,7 @@ int i;
 
 /* free_robot - frees any allocated storage in a robot */
 
-free_robot(i) 
-
-int i;
+void free_robot( int i) 
 {
   struct func *temp;
 
@@ -696,8 +699,8 @@ int i;
 
 void catch_int( void )
 {
-  int i;
 /* 
+  int i;
   for (i = 0; i < MAXROBOTS; i++) {
     cur_robot = &robots[i];
       printf("\nrobot: %d",i);
